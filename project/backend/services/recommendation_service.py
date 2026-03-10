@@ -1,7 +1,7 @@
 from firebase_config import db
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from services.fraud_detection_service import calculate_fraud_score
+from services.fraud_detection_service import REVIEW_THRESHOLD, calculate_fraud_score
 
 
 def get_recommendations(
@@ -108,7 +108,7 @@ def get_recommendations(
         fraud_score = calculate_fraud_score(internship)
 
         # Hard block very risky
-        if fraud_score >= 5:
+        if fraud_score >= REVIEW_THRESHOLD:
             continue
 
         # Apply penalty

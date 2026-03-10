@@ -133,6 +133,11 @@ export default function AdminDashboard() {
                   <p className="text-sm text-gray-600">
                     Status: {item.status}
                   </p>
+                  {item.fraud_score !== undefined && (
+                    <p className="text-sm text-red-600">
+                      Fraud Score: {item.fraud_score}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>

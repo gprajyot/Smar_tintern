@@ -10,6 +10,7 @@ export default function CreateInternshipForm({ onCreated }) {
     industry: "",
     required_experience: 0,
   });
+  const [result, setResult] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,7 +19,11 @@ export default function CreateInternshipForm({ onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/api/company/create-internship", form);
+      const res = await API.post("/api/company/create-internship", form);
+      setResult({
+        fraudScore: res.data.fraud_score,
+        status: res.data.status,
+      });
       onCreated();
       setForm({
         title: "",
@@ -29,6 +34,7 @@ export default function CreateInternshipForm({ onCreated }) {
         required_experience: 0,
       });
     } catch (err) {
+      setResult(null);
       alert("Failed to create internship");
     }
   };
@@ -43,6 +49,12 @@ export default function CreateInternshipForm({ onCreated }) {
       <input name="industry" value={form.industry} onChange={handleChange} placeholder="Industry" className="input-field" />
       <input type="number" name="required_experience" value={form.required_experience} onChange={handleChange} placeholder="Experience (years)" className="input-field" />
       <button className="btn-primary w-full">Create</button>
+      {result && (
+        <div className="rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-gray-700">
+          Fraud score: <span className="font-semibold">{result.fraudScore}</span> | Status:{" "}
+          <span className="font-semibold">{result.status}</span>
+        </div>
+      )}
     </form>
   );
 }
