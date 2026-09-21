@@ -9,6 +9,9 @@ SUSPICIOUS_KEYWORDS = [
     "guaranteed job"
 ]
 
+REVIEW_THRESHOLD = 4
+REJECT_THRESHOLD = 7
+
 
 def calculate_fraud_score(internship):
 
@@ -67,3 +70,13 @@ def calculate_fraud_score(internship):
         pass
 
     return risk_score
+
+
+def get_fraud_status(fraud_score):
+    if fraud_score >= REJECT_THRESHOLD:
+        return "rejected"
+
+    if fraud_score >= REVIEW_THRESHOLD:
+        return "under_review"
+
+    return "active"
